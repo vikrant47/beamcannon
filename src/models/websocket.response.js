@@ -18,6 +18,8 @@ class WebsocketResponse {
 }
 
 const WsResponseTypes = {
+    subscribe:'subscribe',
+    unsubscribe:'unsubscribe',
     subscription: 'subscription',
     connect: 'connect',
     raw: 'raw',

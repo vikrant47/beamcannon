@@ -3,6 +3,16 @@ const {handler} = require("../../lambda");
 const {WebsocketError} = require("../errors/WebsocketError");
 const {v4: uuidv4} = require('uuid');
 
+const createWebsocketEvent = (connectionId, routeKey = '$connect', message = '') => {
+    return {
+        body: message,
+        requestContext: {
+            connectionId,
+            routeKey,
+        }
+    }
+}
+
 class WebsocketServer {
     wss;
     connections;
@@ -30,17 +40,22 @@ class WebsocketServer {
         ws.on('pong', function () {
             this.isAlive = true;
         });
+        handler(createWebsocketEvent(connectId, '$connection')).then(() => {
+            console.log('Handler $connection invoked for websocket');
+        });
     }
 
     onMessage(connectId, ws, message) {
         console.log('received: %s', message);
-        handler().then(() => {
-            console.log('Handler invoked for websocket');
+        handler(createWebsocketEvent(connectId, '$message', message)).then(() => {
+            console.log('Handler $message invoked for websocket');
         });
     }
 
     onClose(connectId, ws) {
-
+        handler(createWebsocketEvent(connectId, '$disconnect', message)).then(() => {
+            console.log('Handler $message invoked for websocket');
+        });
     }
 
     listen() {

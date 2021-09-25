@@ -1,16 +1,44 @@
 const DynamoSlack = require("../dynamo/DynamoSlack");
-const {RequestContext} = require("../../request/request.context");
+const {WebsocketResponse} = require("../../models/websocket.response");
+const {WsResponseTypes} = require("../../models/websocket.response");
 const {Models} = require("../../models");
 const {System} = require("../system/system.service");
-const AWS = require('aws-sdk');
-const WebSocketServer = require("ws");
 const {AwsProvider} = require("../providers/aws.provider");
 const {WebsocketServer} = require("../../websocket/websocket.server");
-const {WebsocketResponse} = require("../../models/websocket.response");
 
 class WebsocketService {
 
     static instance = new WebsocketService();
+
+    async unsubscribe(connectionId, channelName) {
+        const result = await new DynamoSlack(Models.BEAMMEUP_WS_SUBSCRIPTIONS).destroy({
+            where: {
+                channel_name: channelName,
+                connection_id: connectionId,
+            }
+        });
+        await this.sendMessage(connectionId, new WebsocketResponse({
+            connectionId,
+            type: WsResponseTypes.unsubscribe,
+            message: 'UnSubscribe successfully',
+            channelName: channelName,
+            data: result,
+        }));
+    }
+
+    async subscribe(connectionId, channelName) {
+        const result = await new DynamoSlack(Models.BEAMMEUP_WS_SUBSCRIPTIONS).create({
+            channel_name: channelName,
+            connection_id: connectionId,
+        });
+        await this.sendMessage(connectionId, new WebsocketResponse({
+            connectionId,
+            type: WsResponseTypes.subscribe,
+            message: 'Subscribed successfully',
+            channelName: channelName,
+            data: result,
+        }));
+    }
 
     /**
      * @param channelName string
@@ -34,8 +62,8 @@ class WebsocketService {
 
     async sendMessage(connectionId, message, options = {}) {
         if (System.isRunningInLambda()) {
-            const apigwManagementApi = AwsProvider.getInstance().getApiGatewayManagementApi();
-            await this.sendMessageToApiGateway(apigwManagementApi, connectionId, message, options);
+            const apiManagementApi = AwsProvider.getInstance().getApiGatewayManagementApi();
+            await this.sendMessageToApiGateway(apiManagementApi, connectionId, message, options);
         } else {
             await this.sendMessageToLocal(connectionId, message, options);
         }

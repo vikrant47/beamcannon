@@ -18,7 +18,7 @@ class WebsocketHandler extends BaseHandler {
             // handle disconnection
             await this.onDisconnect(connectionId);
         }
-        await this.onMessage();
+        await this.onMessage(connectionId);
         // $default handler
         return {
             statusCode: 200
