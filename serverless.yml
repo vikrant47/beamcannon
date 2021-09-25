@@ -1,0 +1,26 @@
+# serverless.yml
+service: beammeup-backend
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  memorySize: 512 # optional, in MB, default is 1024
+  timeout: 10 # optional, in seconds, default is 6
+  versionFunctions: false # optional, default is true
+  tracing:
+    lambda: true # optional, enables tracing for all functions (can be true (true equals 'Active') 'Active' or 'PassThrough')
+
+functions:
+  handler:
+    handler: lambda.handler # required, handler set in AWS Lambda
+    name: ${sls:stage}-beammeup_backend # optional, Deployed Lambda name
+    description: Workspace BeamMeUp Lambda # optional, Description to publish to AWS
+    reservedConcurrency: 5 # optional, reserved concurrency limit for this function. By default, AWS uses account concurrency limit
+    tracing: PassThrough # optional, overwrite, can be 'Active' or 'PassThrough'
+    events:
+      - http:
+          method: any
+          path: /{proxy+}
+          cors:
+            origin: '*'
+            headers: '*'
