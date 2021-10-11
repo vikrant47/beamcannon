@@ -20,7 +20,8 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "source-map-support": "^0.5.19",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "aws-sdk": "^2.979.0",

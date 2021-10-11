@@ -1,4 +1,4 @@
-const UtilService = require('./UtilService');
+const UtilService = require('../UtilService');
 
 module.exports = {
     operatorMapping: {

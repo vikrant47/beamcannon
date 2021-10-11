@@ -1,4 +1,4 @@
-const DynamoSlack = require("../services/DynamoSlack");
+const DynamoSlack = require("../services/dynamo/DynamoSlack");
 const uuidV4 = require('uuid').v4;
 const {isValidModel} = require("../models");
 const BadRequest = require("../errors/bad.request");
@@ -189,10 +189,10 @@ const TableController = {
                 }
             }
             if (toBeDeleted.length > 0) {
-                await slack.destroyMultiple(toBeDeleted);
+                await slack.bulkDestroy(toBeDeleted);
             }
             if (toBeAdded.length > 0) {
-                await slack.createMultiple(toBeAdded);
+                await slack.bulkCreate(toBeAdded);
             }
             res.send({
                 result: 'success',

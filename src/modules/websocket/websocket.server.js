@@ -1,4 +1,4 @@
-const WebSocketServer = require("ws");
+const {WebSocketServer} = require("ws");
 const {handler} = require("../../lambda");
 const {WebsocketError} = require("../errors/WebsocketError");
 const {v4: uuidv4} = require('uuid');
@@ -30,7 +30,7 @@ class WebsocketServer {
 
     init() {
         this.wss = new WebSocketServer({
-            port: process.env.WS_PORT || 8998,
+            port: process.env.WS_PORT || '8998',
         });
         return this;
     }
@@ -77,6 +77,7 @@ class WebsocketServer {
             clearInterval(this.hbInterval);
         });
         this.heartbeat();
+        console.log('Listening websocket server on ',this.wss.options);
         return this;
     }
 

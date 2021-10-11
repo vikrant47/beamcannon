@@ -1,4 +1,4 @@
-const DynamoSlack = require("../services/DynamoSlack");
+const DynamoSlack = require("../services/dynamo/DynamoSlack");
 const axios = require('axios');
 const UtilService = require('../services/UtilService');
 

@@ -1,4 +1,4 @@
-class AttributeContext {
+class AttributedObject {
     attributes = {};
 
     setAttribute(name, value) {
@@ -15,4 +15,4 @@ class AttributeContext {
     }
 }
 
-module.exports = {AttributeContext};
+module.exports = {AttributedObject};

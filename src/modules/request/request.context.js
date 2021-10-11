@@ -1,9 +1,9 @@
-const {AttributeContext} = require("../models/attribute.context");
-const {System} = require("../enums/system.enums");
+const {AttributedObject} = require("../models/attributedObject");
+const {System} = require("../services/system/system.service");
 
 const {v4: uuidv4} = require('uuid');
 
-class RequestContext extends AttributeContext {
+class RequestContext extends AttributedObject {
     id;
     event;
     context;

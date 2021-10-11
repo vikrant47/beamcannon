@@ -1,5 +1,7 @@
-const {System} = require("./enums/system.enums");
-const {RequestContext} = require("./request/request.context");
+import {Logger} from "./modules/services/logging/Logger";
+
+const {System} = require("./modules/services/system/system.service");
+const {RequestContext} = require("./modules/request/request.context");
 
 const path = require('path')
 const express = require('express')
@@ -8,6 +10,7 @@ const cors = require('cors')
 const compression = require('compression')
 const app = express()
 const routes = require('./routes');
+const {ApplicationManager} = require("./modules/services/application/application.manager");
 
 const {getCurrentInvoke} = require('@vendia/serverless-express');
 
@@ -33,7 +36,10 @@ app.set('views', path.join(__dirname, 'views'))
 // The serverless-express library creates a server and listens on a Unix
 // Domain Socket for you, so you can remove the usual call to app.listen.
 // app.listen(3000)
-app.use('/', routes)
+ApplicationManager.instance().bootstrapAppApplications(routes).then(() => {
+    Logger.log('Applications | All applications have been bootstrapped');
+    app.use('/', routes); // registering routes after bootstrapping
+});
 
 // Export your express server so you can import it in the lambda function.
 module.exports = app;

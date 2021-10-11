@@ -23,5 +23,4 @@ router.put('/tables/:tableName', controllers.model.update);
 router.put('/tables/:tableName/updateAssignment', controllers.model.updateAssignment);
 router.delete('/tables/:tableName', controllers.model.delete);
 router.post('/proxy/trigger/:triggerName', controllers.proxy.trigger);
-
 module.exports = router;

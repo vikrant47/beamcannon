@@ -1,3 +1,7 @@
+import {SystemEvent} from "../../events/system.event";
+import {DataModel} from "../../classes/base/data.model";
+import {ModelEvent} from "../../events/model/model.event";
+
 const BadRequest = require('../../errors/bad.request');
 const uuidV4 = require('uuid').v4;
 const AWS = require('aws-sdk');
@@ -10,6 +14,16 @@ const dynamoDB = new AWS.DynamoDB({
 });
 
 class DynamoSlack {
+    static events = {
+        creating: 'dynamo.slack.creating',
+        updating: 'dynamo.slack.updating',
+        deleting: 'dynamo.slack.deleting',
+        updated: 'dynamo.slack.updated',
+        created: 'dynamo.slack.created',
+        deleted: 'dynamo.slack.deleted',
+        validating: 'dynamo.slack.validating',
+        validated: 'dynamo.slack.validated',
+    };
     tableName;
 
     constructor(tableName) {
@@ -19,27 +33,45 @@ class DynamoSlack {
         this.tableName = tableName;
     }
 
+    async emitEvent(event, payload, bulk = false) {
+        if (bulk !== true) {
+            await SystemEvent.emit(event, payload);
+        } else {
+            const name = 'bulk' + event.substr(0, 1) + event.substr(0, event.length - 1);
+            await SystemEvent.emit(new ModelEvent(name), payload)
+            await Promise.all(payload.map(data => SystemEvent.emit(new ModelEvent(event), data)));
+        }
+    }
+
     async create(payload) {
         if (!payload) {
             throw new BadRequest('Invalid payload in create');
         }
-        const item = Object.assign({id: uuidV4()}, payload);
-        let statement = `INSERT INTO "${this.tableName}" value ${QueryParser.convertToInsertValueExpression(item)}`;
+        const item = new DataModel(this.tableName, Object.assign({id: uuidV4()}, payload));
+        await this.emitEvent(DynamoSlack.events.validating, payload, false);
+        await this.emitEvent(DynamoSlack.events.validated, payload, false);
+        await this.emitEvent(DynamoSlack.events.creating, payload, false);
+        let statement = `INSERT INTO "${this.tableName}" value ${QueryParser.convertToInsertValueExpression(item.toArray())}`;
         console.log(statement);
-        return await dynamoDB.executeStatement({Statement: statement}).promise();
+        const created = await dynamoDB.executeStatement({Statement: statement}).promise();
+        await this.emitEvent(DynamoSlack.events.created, item, false);
     }
 
-    async createMultiple(payload) {
+    async bulkCreate(payload) {
         if (!payload || !Array.isArray(payload)) {
             throw new BadRequest('Invalid payload in create');
         }
         const statements = [];
-        for (const item of payload) {
-            item.id = uuidV4();
+        const items = payload.map(item => new DataModel(this.tableName, item).newId());
+        await this.emitEvent(DynamoSlack.events.validating, items, true);
+        await this.emitEvent(DynamoSlack.events.validated, items, true);
+        await this.emitEvent(DynamoSlack.events.creating, items, true);
+        for (const item of items) {
             statements.push({Statement: `INSERT INTO "${this.tableName}" value ${QueryParser.convertToInsertValueExpression(item)}`})
         }
         console.log(statements);
-        return await dynamoDB.batchExecuteStatement({Statements: statements}).promise();
+        const result = await dynamoDB.batchExecuteStatement({Statements: statements}).promise();
+        await this.emitEvent(DynamoSlack.events.created, items, true);
     }
 
     async update(query, payload, instanceId) {
@@ -74,7 +106,7 @@ class DynamoSlack {
         return await dynamoDB.executeStatement({Statement: statement}).promise();
     }
 
-    async destroyMultiple(payload) {
+    async bulkDestroy(payload) {
         if (!payload || !Array.isArray(payload)) {
             throw new BadRequest('Invalid payload in create');
         }
