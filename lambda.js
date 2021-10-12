@@ -1,8 +1,8 @@
 require('source-map-support/register')
 const serverlessExpress = require('@vendia/serverless-express')
-const app = require('./src/server')
-const {RequestContext} = require("./src/modules/request/request.context");
-const {System} = require("./src/modules/services/system/system.service");
+const app = require('./build/server')
+const {RequestContext} = require("./build/modules/request/request.context");
+const {System} = require("./build/modules/services/system/system.service");
 
 let serverlessExpressInstance
 
