@@ -1,6 +1,6 @@
 const atob = require('atob');
 
-export {
+export default {
     async authenticate(req, res, next) {
         console.log('Into Auth Middleware');
         next();

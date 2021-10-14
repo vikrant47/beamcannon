@@ -1,4 +1,4 @@
-class AttributedObject {
+export class AttributedObject {
     attributes = {};
 
     setAttribute(name, value) {
@@ -15,4 +15,3 @@ class AttributedObject {
     }
 }
 
-export {AttributedObject};

@@ -1,6 +1,6 @@
 const AWS = require('aws-sdk');
 
-export {
+export default {
     convertDynamoDBToJSON(dynamoDbObjectResult) {
         const unmarshalledItems = [];
         for (const item of dynamoDbObjectResult["Items"]) {

@@ -1,4 +1,4 @@
-const Models = {
+export const Models = {
     TEST_USERS: 'test_users',
     QUEUE: 'jira-workspace-queues',
     QUEUE_USERS: 'jira-workspace-queue_users',
@@ -10,11 +10,8 @@ const Models = {
     INSTANCE_PROPERTIES: 'jira-workspace-instance_properties',
     BEAMMEUP_CONNECTIONS: 'beammeup_connections',
     BEAMMEUP_USERS: 'beammeup_users',
-    BEAMMEUP_WS_SUBSCRIPTIONS:'beammeup_websocket_subscriptions'
+    BEAMMEUP_WS_SUBSCRIPTIONS: 'beammeup_websocket_subscriptions'
 }
-export {
-    Models,
-    isValidModel(model) {
-        return Object.values(Models).indexOf(model) >= 0;
-    }
+export const isValidModel = (model) => {
+    return Object.values(Models).indexOf(model) >= 0;
 }

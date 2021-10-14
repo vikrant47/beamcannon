@@ -1,7 +1,8 @@
 import {WebSocketServer} from "ws";
-import {handler} from "../../lambda";
-import {WebsocketError} from "../errors/WebsocketError";
-import {v4: uuidv4} from 'uuid';
+import {WebsocketError} from "../classes/errors/WebsocketError";
+
+const {handler} = require("../handlers");
+const {v4: uuidv4} = require('uuid');
 
 const createWebsocketEvent = (connectionId, routeKey = '$connect', message = '') => {
     return {
@@ -53,7 +54,7 @@ class WebsocketServer {
     }
 
     onClose(connectId, ws) {
-        handler(createWebsocketEvent(connectId, '$disconnect', message)).then(() => {
+        handler(createWebsocketEvent(connectId, '$disconnect', ws)).then(() => {
             console.log('Handler $message invoked for websocket');
         });
     }
@@ -77,7 +78,7 @@ class WebsocketServer {
             clearInterval(this.hbInterval);
         });
         this.heartbeat();
-        console.log('Listening websocket server on ',this.wss.options);
+        console.log('Listening websocket server on ', this.wss.options);
         return this;
     }
 
@@ -89,7 +90,7 @@ class WebsocketServer {
                 ws.ping(() => {
                 });
             });
-        }, process.env.WS_HEARTBEAT_INTERVAL);
+        }, (parseInt(process.env.WS_HEARTBEAT_INTERVAL)));
         return this;
     }
 

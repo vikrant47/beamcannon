@@ -1,7 +1,6 @@
-import {AttributedObject} from "../models/attributedObject";
-import {System} from "../services/system/system.service";
-
-import {v4: uuidv4} from 'uuid';
+const {v4: uuidv4} = require('uuid');
+import {AttributedObject} from "../models/attributed.object";
+import {System} from "../../services/system/system.service";
 
 class RequestContext extends AttributedObject {
     id;

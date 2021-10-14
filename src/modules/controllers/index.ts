@@ -1,9 +1,9 @@
 const controllers = {
-    user: require('./UserController'),
-    model: require('./TableController'),
-    cors: require('./CorsController'),
-    lifeCycle: require('./LifecycleController'),
-    proxy: require('./ProxyController')
+    user: require('./UserController').default,
+    model: require('./TableController').default,
+    cors: require('./CorsController').default,
+    lifeCycle: require('./LifecycleController').default,
+    proxy: require('./ProxyController').default
 }
 
 export default controllers;

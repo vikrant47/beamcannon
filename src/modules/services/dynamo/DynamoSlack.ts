@@ -1,11 +1,11 @@
-import {SystemEvent} from "../../events/system.event";
+import {SystemEvent} from "../../classes/events/system.event";
+import {ModelEvent} from "../../classes/events/model/model.event";
 import {DataModel} from "../../classes/base/data.model";
-import {ModelEvent} from "../../events/model/model.event";
+import BadRequest from "../../classes/errors/bad.request";
+import {isValidModel} from "../../classes/models";
 
-const BadRequest = require('../../errors/bad.request');
 const uuidV4 = require('uuid').v4;
 const AWS = require('aws-sdk');
-import {isValidModel} from '../../models/index';
 const UtilService = require('../../services/UtilService');
 const QueryParser = require('../../services/dynamo/QueryParser');
 AWS.config.loadFromPath('./aws-credentials.json');
@@ -140,7 +140,7 @@ class DynamoSlack {
         for (const item of result.Items) {
             const parsedItem = AWS.DynamoDB.Converter.unmarshall(item)
             for (const [key, value] of Object.entries(parsedItem)) {
-                parsedItem[key] = unescape(value);
+                parsedItem[key] = unescape(`${value}`);
             }
             parsedItems.push(parsedItem);
         }

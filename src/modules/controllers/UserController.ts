@@ -5,7 +5,7 @@ const dynamoDB = new AWS.DynamoDB({
     region: 'us-east-1'
 });
 
-export {
+export default {
     async getAllUsers(req, res, next) {
         console.log(req.query.filters, typeof req.query.filters);
         const filterQueryCondition = UtilService.covertFilterObjectToWhereClause(req.query.filters);

@@ -1,7 +1,8 @@
-const DynamoSlack = require("../services/dynamo/DynamoSlack");
+import DynamoSlack from "../services/dynamo/DynamoSlack";
+import {isValidModel} from "../classes/models";
+import BadRequest from "../classes/errors/bad.request";
+
 const uuidV4 = require('uuid').v4;
-import {isValidModel} from "../models";
-const BadRequest = require("../errors/bad.request");
 const AWS = require('aws-sdk');
 const UtilService = require('../services/UtilService');
 AWS.config.loadFromPath('./aws-credentials.json');

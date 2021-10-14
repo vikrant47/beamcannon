@@ -1,4 +1,8 @@
 import {FileSystem} from "../../classes/filesystem/file.system";
+import {BaseApplication} from "../../classes/base/base.application";
+import {Logger} from "../logging/Logger";
+
+const logger = Logger.getLogger('ApplicationManager');
 
 class ApplicationManager {
     static _instance = new ApplicationManager();
@@ -18,19 +22,27 @@ class ApplicationManager {
     }
 
     /**@return {BaseApplication[]}*/
-    sortByOrder() {
-        return Object.values(this.applications).sort((app1, app2) => app2.getBootstrapOrder() - app1.getBootstrapOrder());
+    sortByOrder(): BaseApplication[] {
+        return <BaseApplication[]>Object.values(this.applications).sort(
+            (app1: BaseApplication, app2: BaseApplication) => app2.getBootstrapOrder() - app1.getBootstrapOrder()
+        );
     }
 
     loadApplications() {
+        logger.log('Loading applications')
         // const appFiles = [];
         const fs = require('fs');
         fs.readdir(FileSystem.getBasePath() + '/applications', (err, files) => {
-            files.forEach(code => {
+            if (err) {
+                throw err;
+            }
+            files.forEach(alias => {
                 //appFiles.push();
-                const filePath = FileSystem.getBasePath() + '/applications/' + code + '/application.js';
-                import {Application} from filePath;
-                this.applications[code] = new Application();
+                const filePath = '../../../applications/' + alias + '/application';
+                logger.log(`Loading application ${alias}`);
+                const {Application} = require(filePath);
+                this.applications[alias] = new Application(alias);
+                logger.log(`Application ${alias} loaded`);
             });
         });
         return this;
@@ -38,10 +50,13 @@ class ApplicationManager {
 
     /**This will scan all app dirs and bootstrap application file**/
     async bootstrapAppApplications(routes) {
+        logger.log('Bootstrapping applications')
         this.loadApplications();
         for (const application of this.sortByOrder()) {
+            logger.log(`Bootstrapping application ${application.getAlias()}`);
             await application.bootstrap();
         }
+        logger.log(`Bootstrapping applications completed`);
     }
 
 }

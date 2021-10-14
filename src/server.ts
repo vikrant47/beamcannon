@@ -1,18 +1,21 @@
 import {Logger} from "./modules/services/logging/Logger";
-
 import {System} from "./modules/services/system/system.service";
-import {RequestContext} from "./modules/request/request.context";
+import {ApplicationManager} from "./modules/services/application/application.manager";
+import {getCurrentInvoke} from '@vendia/serverless-express';
+import {RequestContext} from "./modules/classes/request/request.context";
+import routes from "./routes";
+import {FileSystem} from "./modules/classes/filesystem/file.system";
 
+FileSystem.init(__dirname);
 const path = require('path')
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const compression = require('compression')
 const app = express()
-const routes = require('./routes');
-import {ApplicationManager} from "./modules/services/application/application.manager";
 
-import {getCurrentInvoke} from '@vendia/serverless-express';
+
+
 
 app.use((req, res, next) => {
     const requestContext = RequestContext.getCurrentContext();
@@ -42,4 +45,5 @@ ApplicationManager.instance().bootstrapAppApplications(routes).then(() => {
 });
 
 // Export your express server so you can import it in the lambda function.
-export default app;
+export {app};
+

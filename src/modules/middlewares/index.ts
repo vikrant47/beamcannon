@@ -1,6 +1,8 @@
+import AuthMiddleware from "./AuthMiddleware";
+import ErrorHandlerMiddleware from "./ErrorHandlerMiddleware";
 const middlewares = {
-    auth: require('./AuthMiddleware'),
-    error: require('./ErrorHandlerMiddleware')
+    auth: AuthMiddleware,
+    error: ErrorHandlerMiddleware,
 }
 
 export default middlewares;

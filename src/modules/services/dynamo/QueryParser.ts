@@ -1,6 +1,6 @@
 const UtilService = require('../UtilService');
 
-export {
+export default {
     operatorMapping: {
         '$eq': (field, value) => {
             return `${field} = ${typeof value === 'string' ? "'" + value + "'" : value}`;

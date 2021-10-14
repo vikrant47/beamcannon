@@ -1,4 +1,10 @@
 class BaseApplication {
+    constructor(protected alias?: string) {
+    }
+
+    getAlias(): string {
+        return this.alias;
+    }
 
     /**@return Array*/
     getEventHandlers() {

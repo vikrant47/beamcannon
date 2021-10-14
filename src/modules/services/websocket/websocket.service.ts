@@ -1,7 +1,7 @@
+import {WebsocketResponse, WsResponseTypes} from "../../classes/models/websocket.response";
+
 const DynamoSlack = require("../dynamo/DynamoSlack");
-import {WebsocketResponse} from "../../models/websocket.response";
-import {WsResponseTypes} from "../../models/websocket.response";
-import {Models} from "../../models";
+const {Models} = require("../../models");
 import {System} from "../system/system.service";
 import {AwsProvider} from "../providers/aws.provider";
 import {WebsocketServer} from "../../websocket/websocket.server";

@@ -1,7 +1,7 @@
 import {BaseHandler} from "./base.handler";
 
 
-class WebsocketHandler extends BaseHandler {
+export class WebsocketHandler extends BaseHandler {
     canHandle(event, context) {
         return event.requestContext.connectionId;
     }

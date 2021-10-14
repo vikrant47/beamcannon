@@ -1,14 +1,11 @@
 const uuidV4 = require('uuid').v4;
 
 class DataModel {
-    name;
-    original = {};
-    _attributes = {};
-    fields = [];
+    protected original = {};
+    protected fields = [];
 
-    constructor(name, attributes) {
-        this.name = name;
-        this.attributes = attributes;
+    constructor(protected name, protected _attributes = {}) {
+
     }
 
     newId() {
@@ -21,7 +18,7 @@ class DataModel {
     }
 
     set attributes(value) {
-        this.setAttribute(value);
+        this.setAttributes(value);
     }
 
     getOriginal() {

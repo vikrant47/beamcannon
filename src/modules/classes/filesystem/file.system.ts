@@ -1,7 +1,13 @@
 class FileSystem {
+    static basePath: string;
+
     /**@return {string} */
-    static getBasePath() {
-        return process.env.PWD;
+    static getBasePath(): string {
+        return this.basePath;
+    }
+
+    static init(basePath: string) {
+        this.basePath = basePath;
     }
 }
 

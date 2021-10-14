@@ -5,14 +5,9 @@ class EventMessage extends AttributedObject {
 }
 
 class BaseEvent {
-    name;
-    data;
-    message;
-
-    constructor(name, data, message) {
+    constructor(protected name: string, protected data?: any, protected message?: any) {
         this.name = name;
         this.data = data;
-        this.message = message;
     }
 }
 

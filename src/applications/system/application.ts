@@ -1,7 +1,5 @@
 import {BaseApplication} from "../../modules/classes/base/base.application";
 
-class BeamMeUpApplication extends BaseApplication {
+export class Application extends BaseApplication {
 
 }
-
-export {Application: BaseApplication};

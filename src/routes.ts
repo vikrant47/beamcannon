@@ -1,5 +1,6 @@
-const controllers = require('./controllers');
-const middlewares = require('./middlewares');
+import middlewares from "./modules/middlewares";
+import controllers from "./modules/controllers";
+
 const express = require('express'),
     router = express.Router();
 const cors = require('cors')

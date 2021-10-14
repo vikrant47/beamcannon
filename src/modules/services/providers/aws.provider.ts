@@ -1,11 +1,12 @@
-import {RequestContext} from "../../request/request.context";
+import {RequestContext} from "../../classes/request/request.context";
+
 const AWS = require('aws-sdk');
 
 class AwsProvider {
     static instance = new AwsProvider();
 
     /**@return AwsProvider*/
-    static getInstance() {
+    static getInstance(): AwsProvider {
         return this.instance;
     }
 
