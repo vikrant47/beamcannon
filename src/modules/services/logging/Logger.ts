@@ -6,8 +6,10 @@ export class Logger {
 
     static logger = winston.createLogger({
         transports: [
-            new winston.transports.Console(),
-            new winston.transports.File({filename: 'combined.log'})
+            new winston.transports.Console({
+                level: this.getLevel()
+            }),
+            new winston.transports.File({filename: 'combined.log', level: this.getLevel()})
         ]
     });
 
@@ -16,7 +18,7 @@ export class Logger {
     }
 
     static getLevel() {
-        return process.env.LOG_LEVEL || 'info';
+        return process.env.LOG_LEVEL || 'debug';
     }
 
     static debug(message, ...meta) {

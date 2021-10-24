@@ -1,9 +1,17 @@
+const Sequelize = require('sequelize');
+
 class System {
     static DEFAULT_NAMESPACE = 'DEFAULT_NAMESPACE';
 
+    static initSequelize(namespace) {
+        Sequelize.cls = namespace;
+    }
+
     static createDefaultNamespace() {
         const createNamespace = require('cls-hooked').createNamespace;
-        return createNamespace(System.DEFAULT_NAMESPACE);
+        const namespace = createNamespace(System.DEFAULT_NAMESPACE);
+        this.initSequelize(namespace);
+        return namespace;
     }
 
     static getNamespace() {

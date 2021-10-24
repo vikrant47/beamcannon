@@ -1,8 +1,8 @@
-import {SystemEvent} from "../../classes/events/system.event";
-import {ModelEvent} from "../../classes/events/model/model.event";
-import {DataModel} from "../../classes/base/data.model";
-import BadRequest from "../../classes/errors/bad.request";
-import {isValidModel} from "../../classes/models";
+import {SystemEvent} from "../../../classes/events/system.event";
+import {ModelEvent} from "../../../classes/events/model/model.event";
+import {DataModel} from "../../../classes/base/data.model";
+import BadRequest from "../../../classes/errors/bad.request";
+import {isValidModel} from '../../../classes/models';
 
 const uuidV4 = require('uuid').v4;
 const AWS = require('aws-sdk');

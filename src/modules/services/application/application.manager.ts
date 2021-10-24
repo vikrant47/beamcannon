@@ -28,30 +28,35 @@ class ApplicationManager {
         );
     }
 
-    loadApplications() {
+    /**
+     * Load applications by reading app files from the filesystem
+     */
+    loadApplications(): Promise<any> {
         logger.log('Loading applications')
         // const appFiles = [];
         const fs = require('fs');
-        fs.readdir(FileSystem.getBasePath() + '/applications', (err, files) => {
-            if (err) {
-                throw err;
-            }
-            files.forEach(alias => {
-                //appFiles.push();
-                const filePath = '../../../applications/' + alias + '/application';
-                logger.log(`Loading application ${alias}`);
-                const {Application} = require(filePath);
-                this.applications[alias] = new Application(alias);
-                logger.log(`Application ${alias} loaded`);
+        return new Promise((resolve, reject) => {
+            fs.readdir(FileSystem.getBasePath() + '/applications', (err, files) => {
+                if (err) {
+                    reject(err);
+                }
+                files.forEach(alias => {
+                    //appFiles.push();
+                    const filePath = '../../../applications/' + alias + '/application';
+                    logger.log(`Loading application ${alias}`);
+                    const {Application} = require(filePath);
+                    this.applications[alias] = new Application(alias);
+                    logger.log(`Application ${alias} loaded`);
+                });
+                resolve(this.applications);
             });
         });
-        return this;
     }
 
     /**This will scan all app dirs and bootstrap application file**/
     async bootstrapAppApplications(routes) {
         logger.log('Bootstrapping applications')
-        this.loadApplications();
+        await this.loadApplications();
         for (const application of this.sortByOrder()) {
             logger.log(`Bootstrapping application ${application.getAlias()}`);
             await application.bootstrap();
