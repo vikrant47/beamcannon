@@ -1,5 +1,5 @@
-const app = require('./src/server.js');
-const {WebsocketServer} = require("./src/modules/websocket/websocket.server");
+const {app} = require('./dist/server');
+const {WebsocketServer} = require("./dist/modules/websocket/websocket.server");
 const port = process.env.PORT || 8999;
 
 function asyncTask() {
