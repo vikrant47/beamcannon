@@ -34,7 +34,7 @@ export abstract class AbstractSlack {
         }
     }
 
-    protected constructor(protected tableName: string) {
+    public constructor(protected tableName: string) {
     }
 
     /**
@@ -51,6 +51,8 @@ export abstract class AbstractSlack {
     public abstract findOne(query: SlackQuery): Promise<DataModel>;
 
     public abstract findAll(query: SlackQuery): Promise<DataModel[]>;
+
+    public abstract findAndCountAll(query: SlackQuery): Promise<{ records: DataModel[], total: number }>;
 
     public abstract count(query: SlackQuery): Promise<number>;
 

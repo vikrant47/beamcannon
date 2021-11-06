@@ -29,6 +29,10 @@ export class FsSlack extends AbstractSlack {
         return models[this.tableName].findAll(query);
     }
 
+    findAndCountAll(query: SlackQuery) {
+        return models[this.tableName].findAndCountAll(query);
+    }
+
     findById(id: string): Promise<DataModel> {
         return models[this.tableName].findById(id);
     }

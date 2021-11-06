@@ -1,13 +1,12 @@
 import {SystemEvent} from "../../../classes/events/system.event";
 import {ModelEvent} from "../../../classes/events/model/model.event";
 import {DataModel} from "../../../classes/base/data.model";
-import BadRequest from "../../../classes/errors/bad.request";
 import {isValidModel} from '../../../classes/models';
+import BadRequest from "../../../classes/errors/request/bad.request";
+import QueryParser from "./QueryParser";
 
 const uuidV4 = require('uuid').v4;
 const AWS = require('aws-sdk');
-const UtilService = require('../../services/UtilService');
-const QueryParser = require('../../services/dynamo/QueryParser');
 AWS.config.loadFromPath('./aws-credentials.json');
 const dynamoDB = new AWS.DynamoDB({
     region: 'us-east-1'
