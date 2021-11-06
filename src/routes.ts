@@ -17,11 +17,20 @@ router.post('/installed', controllers.lifeCycle.installed);
 router.post('/uninstalled', controllers.lifeCycle.uninstalled);
 router.get('/users', controllers.user.getAllUsers);
 router.get('/users/:accountId', controllers.user.getUser);
-router.get('/tables/:tableName', controllers.model.getData);
-router.get('/tables/:tableName/count', controllers.model.getCount);
-router.post('/tables/:tableName', controllers.model.create);
-router.put('/tables/:tableName', controllers.model.update);
-router.put('/tables/:tableName/updateAssignment', controllers.model.updateAssignment);
-router.delete('/tables/:tableName', controllers.model.delete);
+
+router.get('/cannon/flextables/:tableName', controllers.flexTable.getData);
+router.get('/cannon/flextables/:tableName/count', controllers.flexTable.getCount);
+router.post('/cannon/flextables/:tableName', controllers.flexTable.create);
+router.put('/cannon/flextables/:tableName', controllers.flexTable.update);
+router.put('/cannon/flextables/:tableName/updateAssignment', controllers.flexTable.updateAssignment);
+router.delete('/cannon/flex/tables/:tableName', controllers.flexTable.delete);
+
+router.get('/cannon/fstables/:tableName', controllers.flexTable.getData);
+router.get('/cannon/fstables/:tableName/count', controllers.flexTable.getCount);
+router.post('/cannon/fstables/:tableName', controllers.flexTable.create);
+router.put('/cannon/fstables/:tableName', controllers.flexTable.update);
+router.put('/cannon/fstables/:tableName/updateAssignment', controllers.flexTable.updateAssignment);
+router.delete('/cannon/fstables/tables/:tableName', controllers.flexTable.delete);
+
 router.post('/proxy/trigger/:triggerName', controllers.proxy.trigger);
 export default router;

@@ -2,19 +2,21 @@ import {TcpServerConfig} from "../../../config/server.config";
 import net from 'net';
 import {Logger} from "../../../modules/services/logging/Logger";
 
+import EventEmitter from 'events';
+
 const uuidV4 = require('uuid').v4;
 
 const logger = Logger.getLogger('beammeup');
 
 /***This will open a tcp server on configured port*/
-export class TcpServer {
+export class TcpServer extends EventEmitter {
     static _instance = new TcpServer();
 
     static instance(): TcpServer {
         return this._instance;
     }
 
-    protected connections = {};
+    public connections: { string: net.Socket } = <{ string: net.Socket }>{};
     protected server: net.Server;
 
     protected init(): this {
@@ -27,6 +29,7 @@ export class TcpServer {
                     connection.remoteAddress,
                     connection.remotePort
                 );
+                this.emit('tcp.socket.connect', connection);
             });
 
             connection.on('data', (data) => {
@@ -34,17 +37,20 @@ export class TcpServer {
                     connection.remoteAddress,
                     connection.remotePort
                 );
+                this.emit('tcp.socket.data', connection, data);
                 /*const flushed = remotesocket.write(data);
                 if (!flushed) {
                     console.log("  remote not flushed; pausing local");
                     connection.pause();
                 }*/
             });
-            connection.on('close', function (had_error) {
+            connection.on('close', (had_error) => {
+                delete this.connections[connection['id']];
                 console.log("%s:%d - closing remote",
                     connection.remoteAddress,
                     connection.remotePort
                 );
+                this.emit('tcp.socket.close', connection);
                 // remotesocket.end();
             });
         });
@@ -60,6 +66,11 @@ export class TcpServer {
     public start() {
         logger.debug(`Starting tcp server up at port ${TcpServerConfig.PORT}`);
         return this.init().listen();
+    }
+
+    publish(connectionId: string, message: any) {
+        const connection: net.Socket = this.connections[connectionId]
+        connection.write(message);
     }
 }
 

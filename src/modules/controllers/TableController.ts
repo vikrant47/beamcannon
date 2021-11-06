@@ -1,6 +1,6 @@
-import DynamoSlack from "../services/dynamo/DynamoSlack";
 import {isValidModel} from "../classes/models";
-import BadRequest from "../classes/errors/bad.request";
+import DynamoSlack from "../services/databases/dynamo/DynamoSlack";
+import BadRequest from "../classes/errors/request/bad.request";
 
 const uuidV4 = require('uuid').v4;
 const AWS = require('aws-sdk');

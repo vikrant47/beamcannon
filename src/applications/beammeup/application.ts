@@ -1,6 +1,7 @@
 import {BeforeCrudTunnels} from "./eventhandlers/before.crud.tunnels";
 import {BaseApplication} from "../../modules/classes/base/base.application";
-import {TcpServer} from "./services/tcp.server";
+import {TcpServer} from "./servers/tcp.server";
+import {TcpTunnelController} from "./controllers/tcp.tunnel.controller";
 
 export class Application extends BaseApplication {
 
@@ -10,7 +11,9 @@ export class Application extends BaseApplication {
     }
 
     bootstrap() {
+        // registerModels();
         TcpServer.instance().start();
+        new TcpTunnelController().register();
     }
 }
 

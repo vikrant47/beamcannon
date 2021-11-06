@@ -1,4 +1,5 @@
-const UtilService = require('../UtilService');
+import UtilService from "../../UtilService";
+
 
 export default {
     operatorMapping: {
