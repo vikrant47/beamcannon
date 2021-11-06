@@ -37,11 +37,15 @@ export class HttpRequestTunnel {
         }*/
         try {
             const tunnelRes: any = await new Promise((resolve, reject) => {
-                TcpOutChannel.getInstance('/tunnels/' + this.tunnelAlias + '/http/request/out').publish({
+                TcpOutChannel.getInstance('/tunnels/' + this.tunnelAlias + '/http/request/out').publish(JSON.stringify({
                     id: this.requestId,
-                    request: JSON.stringify(this.req),
+                    request: {
+                        headers: this.req.headers,
+                        body: this.req.body,
+                        url: '/' + this.path + '?' + this.req.query
+                    },
                     path: this.path,
-                });
+                }));
                 this.addToWaitStack({resolve, reject});
             });
             this.res.set(tunnelRes.headers || {})
