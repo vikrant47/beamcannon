@@ -10,8 +10,10 @@ const cors = require('cors')
 router.use(cors({
     exposedHeaders: ['*'],
 }));
+
 router.use(middlewares.auth.authenticate);
 router.use(middlewares.auth.instanceMiddleware);
+
 router.options('/*', controllers.cors.allow);
 router.post('/installed', controllers.lifeCycle.installed);
 router.post('/uninstalled', controllers.lifeCycle.uninstalled);

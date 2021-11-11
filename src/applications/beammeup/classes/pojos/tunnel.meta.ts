@@ -1,8 +1,8 @@
 import {TunnelHttpData} from "./tunnel.http.data";
 
-export interface TunnelPacket {
+export interface TunnelInPacket {
     meta: TunnelMeta;
-    httpData: TunnelHttpData;
+    httpData?: TunnelHttpData;
     createdAt: Date;
     alias: string;
     first_packet: boolean;

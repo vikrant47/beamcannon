@@ -33,16 +33,17 @@ export class TcpServer extends EventEmitter {
             });
 
             connection.on('data', (data) => {
-                console.log("%s:%d - writing data to remote",
-                    connection.remoteAddress,
-                    connection.remotePort
-                );
+                console.log("%s:%d - writing data to remote", connection.remoteAddress, connection.remotePort);
                 this.emit('tcp.socket.data', connection, data);
                 /*const flushed = remotesocket.write(data);
                 if (!flushed) {
                     console.log("  remote not flushed; pausing local");
                     connection.pause();
                 }*/
+            });
+            connection.on('error', () => {
+                this.emit('tcp.socket.error', connection);
+                console.log("Connection error ", connection['id']);
             });
             connection.on('close', (had_error) => {
                 delete this.connections[connection['id']];

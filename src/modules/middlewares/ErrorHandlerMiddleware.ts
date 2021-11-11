@@ -1,7 +1,7 @@
 import {ApplicationError} from "../classes/errors";
 
 export default {
-    async errorHandler(error, req, res, next) {
+    errorHandler(error, req, res, next) {
         if (error instanceof ApplicationError) {
             res.status(error.getStatusCode()).json({
                 message: error.getMessage()
@@ -11,6 +11,6 @@ export default {
                 message: error.message,
             });
         }
-        next();
+        next(error, req, res, next);
     },
 }
