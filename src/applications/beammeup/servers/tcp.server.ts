@@ -41,6 +41,10 @@ export class TcpServer extends EventEmitter {
                     connection.pause();
                 }*/
             });
+            connection.on('error', () => {
+                this.emit('tcp.socket.error', connection);
+                console.log("Connection error ", connection['id']);
+            });
             connection.on('close', (had_error) => {
                 delete this.connections[connection['id']];
                 console.log("%s:%d - closing remote",

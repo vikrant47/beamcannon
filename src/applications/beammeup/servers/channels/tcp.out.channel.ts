@@ -11,7 +11,14 @@ export class TcpOutChannel extends BaseChannel<string> {
         return this.channels[path];
     }
 
-    publish(payload: any) {
+    static destroy(path: string) {
+        delete this.channels[path];
+    }
+
+    publish(payload: any, errorOnNoSubs = true) {
+        if (this.subscriptions.length === 0 && errorOnNoSubs) {
+            throw new Error('No subscriber exists for channel ' + this.path)
+        }
         for (const connId of this.subscriptions) {
             TcpServer.instance().publish(connId, payload);
         }

@@ -8,6 +8,12 @@ import router from "../../../routes";
 const logger = Logger.getLogger('beammeup.TcpTunnelController');
 
 export class TcpTunnelController {
+    protected static _instance = new TcpTunnelController();
+
+    static getInstance(): TcpTunnelController {
+        return this._instance;
+    }
+
     async onIncomingRequest(req, res) {
         const {tunnelAlias, path} = req.params;
         await TunnelService.instance().tunnelHttpRequest(tunnelAlias, req, res, path);
@@ -20,11 +26,7 @@ export class TcpTunnelController {
                 await TunnelService.instance().createTunnel(connection, packet.meta);
             }
         } else if (connection.tunnelMeta && connection.tunnelMeta.protocol === TunnelProtocol.HTTP) {
-            const packet = <TunnelInPacket>JSON.parse(data.toString('utf-8'));
-            const httpData = packet.httpData;
-            await TcpInChannel
-                .getInstance('/http/pending-requests/' + httpData.requestId + '/data')
-                .publish(httpData);
+           await TunnelService.instance().handleHttpResponse(connection, data);
         }
     }
 
@@ -40,6 +42,5 @@ export class TcpTunnelController {
         TcpServer.instance().on('tcp.socket.close', async (connection) => {
             await this.onClose(connection);
         });
-        router.all('/beammeup/tunnels/:tunnelAlias/:path(*)', this.onIncomingRequest)
     }
 }
