@@ -1,5 +1,5 @@
-const DynamoSlack = require("../../../modules/services/dynamo/DynamoSlack");
-const BadRequest = require("../../../modules/errors/bad.request");
+import DynamoSlack from "../../../modules/services/databases/dynamo/dynamo.slack";
+import BadRequest from "../../../modules/classes/errors/request/bad.request";
 
 class BeforeCrudTunnels {
     events = [DynamoSlack.events.validating];
