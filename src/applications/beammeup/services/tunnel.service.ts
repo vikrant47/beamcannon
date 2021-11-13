@@ -72,7 +72,7 @@ export class TunnelService {
         delete this.connectedTunnels[tunnelMeta.alias];
     }
 
-    async tunnelHttpRequest(tunnelAlias: string, req, res, path: string) {
+    async tunnelHttpRequest(tunnelAlias: string, req, res, path = '') {
         const httpRequestTunnel = new HttpRequestTunnel(tunnelAlias, req, res, path);
         await httpRequestTunnel.tunnel();
     }
