@@ -1,4 +1,5 @@
-const DynamoSlack = require("../services/dynamo/DynamoSlack");
+import DynamoSlack from "../services/databases/dynamo/dynamo.slack";
+
 const axios = require('axios');
 const UtilService = require('../services/UtilService');
 

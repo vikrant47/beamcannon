@@ -3,7 +3,7 @@ import {ModelEvent} from "../../../classes/events/model/model.event";
 import {DataModel} from "../../../classes/base/data.model";
 import {isValidModel} from '../../../classes/models';
 import BadRequest from "../../../classes/errors/request/bad.request";
-import QueryParser from "./QueryParser";
+import QueryParser from "./query.parser";
 
 const uuidV4 = require('uuid').v4;
 const AWS = require('aws-sdk');

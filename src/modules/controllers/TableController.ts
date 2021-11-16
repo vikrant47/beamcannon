@@ -1,5 +1,5 @@
 import {isValidModel} from "../classes/models";
-import DynamoSlack from "../services/databases/dynamo/DynamoSlack";
+import DynamoSlack from "../services/databases/dynamo/dynamo.slack";
 import BadRequest from "../classes/errors/request/bad.request";
 
 const uuidV4 = require('uuid').v4;
