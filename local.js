@@ -5,8 +5,8 @@ const port = process.env.PORT || 8999;
 function asyncTask() {
     return new Promise((resolve) => {
         setTimeout(() => {
-            /*WebsocketServer.getInstance().init().listen();
-            resolve('Started websocket server');*/
+            /*WebsocketServer.getInstance().init().listen();*/
+            resolve('Started websocket server');
         }, 1);
     })
 }
